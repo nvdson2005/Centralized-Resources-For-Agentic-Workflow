@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "additionalDirectories": [
+      "C:\\Users\\Dao Nhung\\.claude"
+    ],
+    "allow": [
+      "Edit(~/.claude/skills/transcript-cleaner-en/**)"
+    ]
+  }
+}
