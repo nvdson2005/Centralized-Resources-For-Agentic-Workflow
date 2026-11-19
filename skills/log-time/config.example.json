@@ -1,0 +1,12 @@
+{
+  "workspace_id": "<your ClockLeap workspace uuid, from list_workspaces>",
+  "idle_min": 10,
+  "max_entry_hours": 4,
+  "billing_client": {
+    "client": "<client name>",
+    "billable_project": "<billable project, e.g. Pilot Phase>",
+    "non_billable_project": "<non-billable project, e.g. Exploratory Phase>",
+    "repo_markers": ["<repo-or-folder-name>", "documentation/tickets/", ".worktrees/"]
+  },
+  "other_default_project": "<project for non-client work, e.g. CL General>"
+}

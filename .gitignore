@@ -1,0 +1,4 @@
+
+# private, un-sanitized skill copies
+skills/*.local/
+skills/*/config.json
