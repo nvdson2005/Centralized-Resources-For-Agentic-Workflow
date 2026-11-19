@@ -4,7 +4,7 @@ Developer work lives in one issue per affected component repo (config, "Componen
 
 ## Research sources
 
-- **Code claims** (Architecture, API Changes, Affected Pages, Root Cause, Files to Change) cite code read from the step 1 code source: an allowed branch, or its read-only worktree. Use the code index if the config names one.
+- **Code claims** (Architecture, Files to Change, Verified Against Codebase) cite code read from the step 1 code source: an allowed branch, or its read-only worktree. Use the code index if the config names one.
 - **Business terms** come from the config's knowledge sources.
 - A claim found in none of them goes under Open Questions, never asserted.
 
@@ -18,51 +18,84 @@ Developer work lives in one issue per affected component repo (config, "Componen
    List every sibling issue. Write `TBD` until a sibling exists; leave it out if there are none.
 3. **Label:** feature or bug label from config, set with the CLI flag, never written into the body.
 
+## Shared sections (every component)
+
+Each contract below places these by name:
+
+- **`## Context`**: 2 to 4 sentences: what changes and why, from the parent's point of view, plus today's facts with numbers where they exist (counts, sizes, timings, error rates).
+- **`## Decisions`**: one bullet per technical decision, numbered, each with who made it and when. The last bullet is what was rejected and why:
+  ```
+  - D1: <decision, concrete: command, flag, path, value> (<name>, <date>)
+  - Rejected: <alternative> (<reason>)
+  ```
+  A decision the user didn't confirm ends with `(assumed, to confirm)`.
+- **`## Edge Cases`**: one bullet per case, `- E1: <situation> → <expected result>`. Test rows and scenarios point to these ids.
+- **`## Todo`**: ordered checkboxes, each tagged with the criteria it satisfies: `- [ ] <step> (T2, T3)`.
+- **`## Technical Acceptance Criteria`**: one checkbox per check, `- [ ] T1: <measurable check>`, ticked when verified, up to about 8, each naming how it's checked. Add a security or permissions line when the work touches auth, roles, CI or secrets.
+- **`## Out of Scope`**: technical boundaries for this issue. Business scope stays in the parent.
+- **`## Open Questions`**: technical points code and docs can't settle, or "None". "Where is X in the code" is never one: look it up.
+  ```
+  - Q1: <question> (Owner: technical owner | implementer)
+    - Today: <what we checked and saw>
+    - Why it matters: <the T-id or decision it blocks>
+    - A: <option>: <trade-off>
+    - B: <option>: <trade-off>
+    - Suggested: <A, B, or an order>
+  ```
+  Business questions belong in the parent.
+- **`## Verified Against Codebase`**: branch, commit SHA and date the facts were read from, then one bullet per claim: `- <claim>: <path>:<line>`.
+
 ## Backend (service / API) contract
 
-1. **`## Context`**: 2 to 4 sentences on what changes in this service and why, from the parent's point of view.
-2. **`## Flow: current → new`**: two ```` ```mermaid ```` `flowchart` blocks through services, endpoints and data stores, changed nodes marked (e.g. `:::changed` with a `classDef`). A brand-new flow gets only the new chart, plus "No current flow."
-3. **`## Architecture`**: an endpoints table, then data model changes (tables, columns, defaults) or "None":
+1. **`## Context`** (shared)
+2. **`## Flow: Current`**: one ```` ```mermaid ```` `flowchart` through services, endpoints and data stores. A brand-new flow writes "No current flow."
+3. **`## Flow: New`**: one ```` ```mermaid ```` `flowchart` after the change, changed nodes marked (e.g. `:::changed` with a `classDef`).
+4. **`## Architecture`**: an endpoints table, then data model changes (tables, columns, defaults) or "None":
    ```
    | Method | Path | Handler | New / Changed / Removed | Contract delta |
    ```
-4. **`## Root Cause`** *(bugs only)*: 1 to 2 sentences naming the file and function.
-5. **`## Implementation`**: one `###` sub-step per change, one line each. A code block only when it IS the change.
-6. **`## Deployment & Data`**: what the technical owner's team must run or provide per environment: migrations, data scripts, environment variables, scheduled jobs, config. "None" if nothing.
-7. **`## Test Cases`**: the E2E/API cases in the project's suite (config, "Tests"):
+5. **`## Decisions`** (shared)
+6. **`## Edge Cases`** (shared)
+7. **`## Deployment & Data`**: what the technical owner's team must run or provide per environment: migrations, data scripts, environment variables, scheduled jobs, config. "None" if nothing.
+8. **`## Test Cases`**: the E2E/API cases in the project's suite (config, "Tests"):
    ```
-   | Case | Location | Setup | Expected |
+   | Case | Edge case / T-id | Location | Setup | Expected |
    ```
-   Cover the happy path, an auth failure, a validation failure, and each edge case in Acceptance Criteria. If the suite lives outside this repo, list cases here and never under Files to Change. Add unit/integration cases as rows too when the config names a framework.
-8. **`## Acceptance Criteria`**: up to about 6 checkable bullets, one clause each.
-9. **`## Files to Change`**: a fenced block of paths with `← what changes` annotations.
-10. **`## Open Questions`**: technical points code and docs can't settle, owner technical owner. "None" if none. "Where is X in the code" is never an open question: look it up.
+   Cover the happy path, an auth failure, a validation failure, and every Edge Case. If the suite lives outside this repo, list cases here and never under Files to Change. Add unit/integration rows when the config names a framework.
+9. **`## Todo`** (shared)
+10. **`## Technical Acceptance Criteria`** (shared)
+11. **`## Out of Scope`** (shared)
+12. **`## Files to Change`**: a fenced block of paths with `← what changes` annotations.
+13. **`## Open Questions`** (shared)
+14. **`## Verified Against Codebase`** (shared)
 
 ## Frontend (UI) contract
 
-1. **`## Context`**: 2 to 4 sentences on what changes for the user and why.
-2. **`## API Changes`**: or "None":
-   ```
-   | Endpoint | Change (new / changed contract / removed) | Consumed in (service / hook / store) |
-   ```
-3. **`## Affected Pages`**:
-   ```
-   | Route / page | Component | Change |
-   ```
-4. **`## User Flow`**: one ```` ```mermaid ```` `flowchart` of the new flow through the screens, changed steps marked, or "No flow change".
-5. **`## Root Cause`** *(bugs only)*: 1 to 2 sentences naming the component or hook.
-6. **`## Implementation`**: one `###` sub-step per change, one line each.
+Same order and section names as the backend contract. Only the content of Flow, Architecture, the deployment slot and Test Cases is UI-specific.
+
+1. **`## Context`** (shared)
+2. **`## Flow: Current`**: one ```` ```mermaid ```` `flowchart` of today's user flow through screens, components and API calls. A brand-new flow writes "No current flow."
+3. **`## Flow: New`**: one ```` ```mermaid ```` `flowchart` after the change, changed steps marked. If the flow doesn't change, write "No flow change" in both.
+4. **`## Architecture`**:
+   - **API changes**, or "None": `| Endpoint | Change (new / changed contract / removed) | Consumed in (service / hook / store) |`
+   - **Affected pages:** `| Route / page | Component | Change |`
+   - Then state changes (stores, contexts, cache keys, local storage), or "None".
+5. **`## Decisions`** (shared)
+6. **`## Edge Cases`** (shared)
 7. **`## Copy & Translations`**: new or changed user-facing strings, in the config's i18n key format with their source-language text. "None" if none.
-8. **`## Tests`**:
-   - **Unit** (framework from config): `| Test file | Case | New / Refined |`
-   - **E2E**: cases for the config's E2E tool, or, if there is none, `Given / When / Then` scenarios to run by hand on a test environment and reuse for acceptance testing.
-9. **`## Acceptance Criteria`**: up to about 6 checkable bullets.
-10. **`## Files to Change`**: a fenced path block with `←` annotations.
-11. **`## Open Questions`**: technical points, owner technical owner, or "None". Business questions belong in the parent.
+8. **`## Test Cases`**:
+   - **Unit** (framework from config): `| Test file | Case | Edge case / T-id | New / Refined |`
+   - **E2E**: cases for the config's E2E tool, or, if there is none, `Given / When / Then` scenarios tagged with E-ids, run by hand on a test environment and reused for acceptance testing.
+9. **`## Todo`** (shared)
+10. **`## Technical Acceptance Criteria`** (shared)
+11. **`## Out of Scope`** (shared)
+12. **`## Files to Change`**: a fenced path block with `←` annotations.
+13. **`## Open Questions`** (shared)
+14. **`## Verified Against Codebase`** (shared)
 
 ## Other components (worker, mobile, infra, library)
 
-`## Context`, `## Change` (the interface or behavior that changes, as a table if there are several), `## Root Cause` *(bugs only)*, `## Implementation`, `## Deployment & Data` (if it runs somewhere), `## Tests` (framework from config), `## Acceptance Criteria`, `## Files to Change`, `## Open Questions`.
+`## Context`, `## Change` (the interface or behavior that changes, as a table if there are several), `## Decisions`, `## Edge Cases`, `## Deployment & Data` (if it runs somewhere), `## Tests` (framework from config), `## Todo`, `## Technical Acceptance Criteria`, `## Out of Scope`, `## Files to Change`, `## Open Questions`, `## Verified Against Codebase`.
 
 ## Brevity
 
@@ -70,17 +103,19 @@ An issue is a scannable spec, not an essay. Tables, mermaid charts and code carr
 
 ## Common mistakes
 
-- **Wrong contract for the component** (Affected Pages in a backend issue).
+- **Wrong content for the component.** Section names match across components, but a backend Architecture holds endpoints and tables and a frontend one holds API usage, pages and state.
 - **Missing parent link.** Every issue opens with it.
 - **ASCII flow blocks.** Use mermaid.
 - **Test rows without cases.** Each row names a concrete case, where it lives, and its expected result. "Add tests" is not a case.
-- **Vague code claims** with no file, endpoint or component.
+- **Vague code claims** with no file, endpoint or component. List them under Verified Against Codebase.
+- **List items as bare lines.** Every list item (D, E, T, Q, Todo, Out of Scope, verified claims) is a markdown bullet.
+- **Unlinked ids.** Every Todo item names its T-ids, and every test row names its E- or T-id.
 - **Business questions in issues.** They belong in the parent.
 - **Local references.** Readers see only the tracker and the code host.
 
 ## Voice
 
-Applies to Context, Root Cause, Implementation lines and bullet lists. Tables, mermaid, paths and `←` annotations are exact technical content and stay as they are.
+Applies to Context, Decisions, Edge Cases, Out of Scope and Open Questions prose. Tables, mermaid, paths and `←` annotations are exact technical content and stay as they are.
 
 - Plain and direct, short sentences, active voice. No filler or hype words.
 - **No em dashes at all.** No `—`, no `--`, no inline `---`. Check this last.

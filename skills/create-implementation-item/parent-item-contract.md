@@ -26,10 +26,11 @@ Use the config's knowledge sources (docs, wiki, product guide) for terminology a
    - A story the user didn't ask for ends with `(assumed, to confirm)`.
 4. **`## Summary`**: 2 to 4 sentences: the capability, who it's for, and what users can do afterwards.
 5. **`## Why`**: how things work today from the user's side, and what that costs the business (risk, wasted spend, support load, lost trust). Up to 4 bullets.
-6. **`## Business Rules`**: defaults, limits, thresholds, permissions, timing, edge cases. One rule per bullet. A rule the user didn't state ends with `(assumed, to confirm)`.
-7. **`## Out of Scope`**: business-level boundaries (user groups, account types, related features). Bullets, unstated ones marked `(assumed, to confirm)`.
-8. **`## Acceptance Criteria`**: up to about 6 outcomes a product owner can check by using the product. One clause each.
-9. **`## Open Questions`**: every open point from scoping, waiting to be posted. Grouped, and a group with no questions is left out:
+6. **`## Business Rules`**: defaults, limits, thresholds, permissions and timing, one bullet per rule, `- D1:`. A rule someone decided ends with `(<name>, <date>)`; a rule the user didn't state ends with `(assumed, to confirm)`.
+7. **`## Edge Cases`**: one bullet per case, `- E1: <what a person does or runs into> → <what they should see>`, in plain words. The issues' Edge Cases build on these.
+8. **`## Out of Scope`**: business-level boundaries (user groups, account types, related features). Bullets, unstated ones marked `(assumed, to confirm)`. End with `Ruled out: <option> (<reason>)` for options discussed and dropped.
+9. **`## Acceptance Criteria`**: up to about 6 outcomes a product owner can check by using the product. One clause each.
+10. **`## Open Questions`**: every open point from scoping, waiting to be posted. Grouped, and a group with no questions is left out:
    ```
    **Business (<business owner>)**
    - <question answerable without knowing the code> (assumed for now: <assumption>)
@@ -37,7 +38,7 @@ Use the config's knowledge sources (docs, wiki, product guide) for terminology a
    - <question code and docs can't settle> (checked: <what we looked at>)
    ```
    With no owner name in the config, use just "Business" / "Technical". Write "None" if there are no questions.
-10. **`## Related`**: the implementation issues (`<repo>#<n>`, or `TBD` before they exist), sibling tracker items by title or id, and doc section names.
+11. **`## Related`**: the implementation issues (`<repo>#<n>`, or `TBD` before they exist), sibling tracker items by title or id, and doc section names.
 
 That list is complete. No flow charts, root cause, implementation, file lists or estimates.
 
