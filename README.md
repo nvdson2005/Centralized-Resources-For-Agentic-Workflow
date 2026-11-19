@@ -15,6 +15,12 @@ Nothing is written to the tracker or the code host until you approve a preview. 
 
 Each project sets its tracker, people, repos, branches and test tools in a small config file. Start from `skills/create-implementation-item/project-config.md` and save the filled copy as `<workspace root>/.claude/create-implementation-item.md`. If it's missing, the skill asks for the values on the first run and offers to save them.
 
+### ticket-orchestrator
+
+Runs several tickets in parallel: one coordinator session talks to you, one worker session per ticket implements in its own worktree. Workers send their questions to the coordinator, which answers from verified sources or asks you. Risky steps (commit, shared deploys, DB writes, PRs) wait for your OK. Works on Orca, plain Claude Code background sessions, or tmux. See `skills/ticket-orchestrator/README.md` for the design and a comparison of the three.
+
+Each project sets worktrees, answer sources and gates in `<workspace root>/.claude/ticket-orchestrator.md`, starting from `skills/ticket-orchestrator/project-config.md`.
+
 ## Install
 
 Symlink the skill into your Claude Code skills folder:
